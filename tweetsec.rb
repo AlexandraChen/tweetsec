@@ -7,7 +7,6 @@ class Tweetsec
 
   
   def split_word(str)
-
     @result = []
     chas = str.split("")
     len = chas.size
@@ -16,14 +15,12 @@ class Tweetsec
         @result << chas[i..j].join
       end
     end
-    
     find_matches
   end
 
   def find_matches
     matches = []
     words = File.readlines('en.txt')
-    
     @result.each do |word| 
       words.each do |line|
         if line.strip == word
@@ -31,8 +28,23 @@ class Tweetsec
         end
       end
     end
-      puts matches
+
+    if matches.size > 0 
+      longest_word = matches.max_by(&:length)
+      word_substitution(longest_word)
+    else
+      puts "password is safe"
+    end
+    
   end 
+
+
+  def word_substitution(longest_word)
+    random_letter = ('a'..'z').to_a[rand(26)]
+    new_password = @password.gsub(longest_word, random_letter*longest_word.size)
+    puts new_password
+  end
+
 
 end
 
