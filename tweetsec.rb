@@ -33,7 +33,7 @@ class Tweetsec
       longest_word = matches.max_by(&:length)
       word_substitution(longest_word)
     else
-      puts "password is safe"
+      check_strength(@password)
     end
     
   end 
@@ -42,9 +42,29 @@ class Tweetsec
   def word_substitution(longest_word)
     random_letter = ('a'..'z').to_a[rand(26)]
     new_password = @password.gsub(longest_word, random_letter*longest_word.size)
-    puts new_password
+    check_strength (new_password)
   end
 
+  def check_strength(password)
+    score = 0
+    score += 5 if password.match(/\w/)
+    score += 10 if password.match(/\d/)
+    score += 15 if password.match(/\s/)
+    score += 20 if password.match(/[^0-9A-Za-z]/)
+    check_level(score)
+    
+  end
+
+  def check_level(score)
+    puts score
+    if score >= 50
+      puts "Your password is strong"
+    elsif score > 10 && score < 50
+      puts "Your password is weak"
+    else
+      puts "Your password is unacceptable"
+    end
+  end
 
 end
 
